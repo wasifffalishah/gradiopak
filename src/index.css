@@ -1,0 +1,191 @@
+@import "tailwindcss";
+
+@theme {
+  --color-canvas: #08090c;
+  --color-panel: rgba(13, 14, 18, 0.94);
+  --color-surface-2: #111217;
+  --color-surface-3: #171920;
+  --color-surface-4: #20222a;
+  --color-line: #22242b;
+  --color-line-soft: rgba(255, 255, 255, 0.06);
+  --color-line-strong: rgba(255, 255, 255, 0.18);
+  --color-ink: #f3f4f8;
+  --color-body: #c5c7ce;
+  --color-mute: #8e919b;
+  --color-ash: #61646d;
+  --color-stone: #36383f;
+
+  --color-accent-red: #ff6161;
+  --color-accent-yellow: #ffc533;
+  --color-accent-green: #59d499;
+  --color-accent-blue: #57c1ff;
+  --color-hero-1: #ff5757;
+  --color-hero-2: #c2292f;
+  --color-hero-3: #a1131a;
+
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+}
+
+/* Dynamic Ambient Glow CSS Properties */
+@property --amb1 { syntax: '<color>'; inherits: true; initial-value: #4C5FD5; }
+@property --amb2 { syntax: '<color>'; inherits: true; initial-value: #FF8FA3; }
+@property --amb3 { syntax: '<color>'; inherits: true; initial-value: #8B6BAE; }
+
+:root {
+  --canvas: #08090c;
+  --panel: rgba(13, 14, 18, .94);
+  --s2: #111217;
+  --s3: #171920;
+  --s4: #20222a;
+  --line: #22242b;
+  --line-soft: rgba(255, 255, 255, .06);
+  --line-strong: rgba(255, 255, 255, .18);
+  --ink: #f3f4f8;
+  --body: #c5c7ce;
+  --mute: #8e919b;
+  --ash: #61646d;
+  --stone: #36383f;
+  --accent-red: #ff6161;
+  --accent-yellow: #ffc533;
+  --accent-green: #59d499;
+  --accent-blue: #57c1ff;
+  --amb1: #4C5FD5;
+  --amb2: #FF8FA3;
+  --amb3: #8B6BAE;
+  --amb-opacity: .38;
+  --sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --mono: ui-monospace, 'SF Mono', monospace;
+  transition: --amb1 .9s ease, --amb2 .9s ease, --amb3 .9s ease;
+}
+
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--canvas);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--stone) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ambient dynamic background driven by active palette (exact original Gradiopak formula) */
+.ambient {
+  position: fixed;
+  inset: -14vh -14vw;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--amb-opacity, 0.38);
+  filter: blur(40px);
+  transform: translate3d(0, 0, 0);
+  background:
+    radial-gradient(ellipse 46% 52% at 12% 8%, var(--amb1, #4C5FD5), transparent 70%),
+    radial-gradient(ellipse 40% 48% at 92% 4%, var(--amb2, #FF8FA3), transparent 70%),
+    radial-gradient(ellipse 52% 60% at 60% 100%, var(--amb3, #8B6BAE), transparent 70%);
+}
+
+/* Custom styled Range Inputs */
+input[type="range"].custom-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(to right, #f3f4f8 var(--fill, 50%), rgba(255, 255, 255, 0.12) var(--fill, 50%));
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"].custom-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+  cursor: grab;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+input[type="range"].custom-range::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+input[type="range"].custom-range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+  cursor: grab;
+}
+
+/* Subtle scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--stone);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ash);
+}
+
+/* Hide scrollbar while keeping scroll functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* Fluid moving white gradient inside creator name typography */
+@keyframes whiteShineFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.name-shimmer-flow {
+  background: linear-gradient(
+    115deg,
+    #ffffff 0%,
+    #d4d4d8 18%,
+    #ffffff 36%,
+    #a1a1aa 52%,
+    #ffffff 68%,
+    #e4e4e7 84%,
+    #ffffff 100%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: whiteShineFlow 6s ease-in-out infinite;
+  display: inline-block;
+}
+
